@@ -26,5 +26,13 @@ struct visionOS_Demo_AppApp: App {
         }
         .windowStyle(.volumetric)
         .defaultSize(width : 800 , height : 820 , depth : 2)
+        
+        
+        ImmersiveSpace(id : "fullImmersive"){
+            FullImmersivePage()
+            Cat3DScreen()
+        }
+        .immersionStyle(selection: .constant(.full))
+    
     }
 }
