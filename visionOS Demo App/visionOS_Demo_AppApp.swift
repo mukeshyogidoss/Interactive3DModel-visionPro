@@ -10,29 +10,32 @@ import SwiftUI
 @main
 struct visionOS_Demo_AppApp: App {
 
-    @State private var appModel = AppModel()
+    @StateObject var appState = AppState()
+    
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(appModel)
+            if appState.isVolumtericOpen {
+                ChamelonInformation()
+            }
+            else{
+                ContentView()
+            }
+              
         }
+        .windowResizability(.contentSize)
+        .environmentObject(appState)
         
-        
-        
-        //Sertting Volumetric window here
-        WindowGroup(id : "volumetricCat"){
-            Cat3DScreen()
+        WindowGroup(id : "ChamelonWindow"){
+            ChamelonWindow()
         }
         .windowStyle(.volumetric)
-        .defaultSize(width : 800 , height : 820 , depth : 2)
+        .defaultSize(width : 0.6 , height : 0.6 , depth:  0.6 , in : .meters)
+        .environmentObject(appState)
+            
         
         
-        ImmersiveSpace(id : "fullImmersive"){
-            FullImmersivePage()
-            Cat3DScreen()
-        }
-        .immersionStyle(selection: .constant(.full))
+       
     
     }
 }

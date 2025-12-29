@@ -12,27 +12,27 @@ import RealityKitContent
 struct ContentView: View {
     
     @Environment(\.openWindow) var openWindow123
-    @Environment(\.openImmersiveSpace) var openImmersiveSpace123
-    @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
-
+    @EnvironmentObject private var appState : AppState
+    
+    
+    @State var showChamelon = false
+    
+   
     var body: some View {
         
-        
-        Button("Open 3D Cat Model"){
-            openWindow123(id: "volumetricCat")
-        }
-        
-        Button("Open in Immersive Space"){
-            Task{
-                await dismissImmersiveSpace()
-                await openImmersiveSpace123(id: "fullImmersive")
+        VStack{
+            Button("Open Chamelon"){
+                appState.isVolumtericOpen.toggle()
+               openWindow123(id: "ChamelonWindow")
             }
-        }
+            
+        }.frame(width : 200 , height : 200)
+            
         
+      
     }
        
 }
-
 #Preview(windowStyle: .automatic) {
     ContentView()
        

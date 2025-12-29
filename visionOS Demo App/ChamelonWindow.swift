@@ -6,13 +6,32 @@
 //
 
 import SwiftUI
+import RealityKit
+import RealityKitContent
 
 struct ChamelonWindow: View {
+    
+    @EnvironmentObject private var appState: AppState
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        RealityView{content in
+            
+            do{
+                let sceneEntity = try await Entity.init(named : "Chamelon" , in : realityKitContentBundle)
+                content.add(sceneEntity)
+            }
+            catch{
+                print("Error Occueredddddddd")
+            }
+        }
+        .onDisappear {
+            appState.isVolumtericOpen = false
+        }
     }
 }
 
 #Preview {
     ChamelonWindow()
 }
+
+
