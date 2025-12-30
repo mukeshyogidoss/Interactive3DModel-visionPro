@@ -14,10 +14,15 @@ struct ChamelonWindow: View {
     @EnvironmentObject private var appState: AppState
     @State private var rotateBy : Double = 0.0
     
-    
+    //For moving vertical and horizontal
     @State private var sceneEntity: Entity?//
     @State private var rotationX: Float = 0
     @State private var rotationY: Float = 0
+    
+    //For Pinching
+    @State var scale : Double = 1.0
+    @State var startScale : Double? = nil
+    
     
     
     
@@ -44,11 +49,7 @@ struct ChamelonWindow: View {
             DragGesture(minimumDistance:  0.0)
                 .targetedToAnyEntity()
                 .onChanged{ value in
-//                    let location3D = value.convert(value.location3D, from: .local, to: .scene)
-//                    let startLocation = value.convert(value.startLocation3D ,from : .local , to : .scene)
-//                        let delta = location3D - startLocation
-//                    
-//                    rotateBy = Double(atan(delta.y * 3))
+
                     
                     guard let entity = sceneEntity else { return }
 
@@ -61,7 +62,7 @@ struct ChamelonWindow: View {
                                 rotationX -= deltaX
 
                                 // Optional: clamp X rotation to prevent flipping
-                                rotationX = min(max(rotationX, -Float.pi/2), Float.pi/2)
+//                                rotationX = min(max(rotationX, -Float.pi/2), Float.pi/2)
 
                                 // Combine rotations
                                 let rotY = simd_quatf(angle: rotationY, axis: SIMD3<Float>(0,1,0))
@@ -69,6 +70,24 @@ struct ChamelonWindow: View {
                                 entity.transform.rotation = rotY * rotX
                     
                 }
+        )
+        
+        .scaleEffect(scale)
+        .simultaneousGesture(
+            MagnifyGesture()
+                .onChanged({value in
+                    if let startScale {
+                        scale = max(0.5 , min(5 , value.magnification  * startScale))
+                    }
+                    else{
+                        startScale = scale
+                    }
+                    
+                })
+                .onEnded({ _ in
+                    startScale = scale
+                })
+            
         )
         .onDisappear {
             appState.isVolumtericOpen = false
