@@ -30,10 +30,10 @@ struct visionOS_Demo_AppApp: App {
             ChamelonWindow()
         }
         .windowStyle(.volumetric)
-        .defaultSize(width : 0.6 , height : 0.6 , depth:  0.6 , in : .meters)
+        .defaultSize(width : 2 , height : 1 , depth:  1 , in : .meters)
         .environmentObject(appState)
             
-        
+         
         
        
     
